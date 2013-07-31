@@ -1,0 +1,362 @@
+{
+  "name": "domcleal-augeasproviders",
+  "version": "0.5.2",
+  "source": "git://github.com/hercules-team/augeasproviders",
+  "author": "domcleal",
+  "license": "Apache 2.0",
+  "summary": "Alternative Augeas-based providers for Puppet",
+  "description": "This module provides alternative providers for core Puppet types using the Augeas configuration API library.",
+  "project_page": "http://github.com/hercules-team/augeasproviders",
+  "dependencies": [
+
+  ],
+  "types": [
+    {
+      "name": "sshd_config",
+      "doc": "Manages settings in an OpenSSH sshd_config file.\n\nThe resource name is used for the setting name, but if the `condition` is\ngiven, then the name can be something else and the `key` given as the name\nof the setting.\n\nSubsystem entries are not managed by this type. There is a specific `sshd_config_subsystem` type to manage these entries.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        },
+        {
+          "name": "value",
+          "doc": "Value to change the setting to. The follow parameters take an array of values:\n    \n- MACs;\n- AcceptEnv;\n- AllowGroups;\n- AllowUsers;\n- DenyGroups;\n- DenyUsers.\n    \nAll other parameters take a string. When passing an array to other parameters, only the first value in the array will be considered."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "key",
+          "doc": "The name of the setting, or a unique string if `condition` given."
+        },
+        {
+          "name": "target",
+          "doc": "The file in which to store the settings, defaults to\n`/etc/ssh/sshd_config`."
+        },
+        {
+          "name": "condition",
+          "doc": "Match group condition for the entry,\nin the format:\n\n    sshd_config { 'PermitRootLogin':\n      value     => 'without-password',\n      condition => 'Host example.net',\n    }\n\nThe value can contain multiple conditions, concatenated together with\nwhitespace.  This is used if the `Match` block has multiple criteria.\n\n    condition => 'Host example.net User root'\n      "
+        }
+      ],
+      "providers": [
+        {
+          "name": "augeas",
+          "doc": "Uses Augeas API to update an sshd_config parameter"
+        }
+      ]
+    },
+    {
+      "name": "sysctl",
+      "doc": "Manages entries in /etc/sysctl.conf.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        },
+        {
+          "name": "value",
+          "doc": "Value to change the setting to. Settings with multiple values (such as net.ipv4.tcp_mem are represented as a single whitespace separated string."
+        },
+        {
+          "name": "comment",
+          "doc": "Text to be stored in a comment immediately above the entry.  It will be automatically prepended with the name of the setting in order for the provider to know whether it controls the comment or not."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the setting, e.g. net.ipv4.ip_forward"
+        },
+        {
+          "name": "target",
+          "doc": "The file in which to store the settings, defaults to\n      `/etc/sysctl.conf`."
+        }
+      ],
+      "providers": [
+        {
+          "name": "augeas",
+          "doc": "Uses Augeas API to update sysctl settings"
+        }
+      ]
+    },
+    {
+      "name": "kernel_parameter",
+      "doc": "Manages kernel parameters stored in bootloaders.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        },
+        {
+          "name": "value",
+          "doc": "Value of the parameter if applicable.  Many parameters are just keywords so this must be left blank, while others (e.g. 'vga') will take a value."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The parameter name, e.g. 'quiet' or 'vga'."
+        },
+        {
+          "name": "target",
+          "doc": "The bootloader configuration file, if in a non-default location for the provider."
+        },
+        {
+          "name": "bootmode",
+          "doc": "Boot mode(s) to apply the parameter to.  Either 'all' (default) to use the parameter on all boots (normal and recovery mode), 'normal' for just normal boots or 'recovery' for just recovery boots.  Valid values are `all`, `normal`, `recovery`."
+        }
+      ],
+      "providers": [
+        {
+          "name": "grub",
+          "doc": "Uses Augeas API to update kernel parameters in GRUB's menu.lst"
+        },
+        {
+          "name": "grub2",
+          "doc": "Uses Augeas API to update kernel parameters in GRUB2's /etc/default/grub\n\nRequired binaries: `/usr/sbin/grub2-mkconfig`."
+        }
+      ]
+    },
+    {
+      "name": "sshd_config_subsystem",
+      "doc": "Manages Subsystem settings in an OpenSSH sshd_config file.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        },
+        {
+          "name": "command",
+          "doc": "The command to execute upon subsystem request."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the subsystem to set."
+        },
+        {
+          "name": "target",
+          "doc": "The file in which to store the settings, defaults to\n      `/etc/ssh/sshd_config`."
+        }
+      ],
+      "providers": [
+        {
+          "name": "augeas",
+          "doc": "Uses Augeas API to update a Subsystem parameter in sshd_config."
+        }
+      ]
+    },
+    {
+      "name": "nrpe_command",
+      "doc": "Manages commands in /etc/nagios/nrpe.cfg.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        },
+        {
+          "name": "command",
+          "doc": "Check command to run on the system, with arguments"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the command, e.g. check_my_stuff"
+        },
+        {
+          "name": "target",
+          "doc": "The file in which to store the command, defaults to\n      `/etc/nagios/nrpe.cfg`."
+        }
+      ],
+      "providers": [
+        {
+          "name": "augeas",
+          "doc": "Uses Augeas API to update nrpe commands"
+        }
+      ]
+    },
+    {
+      "name": "syslog",
+      "doc": "Manages settings in syslog.conf.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        },
+        {
+          "name": "no_sync",
+          "doc": "Whether to omit syncing the file after every logging, ony when action_type is file.  Valid values are `true`, `false`."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the resource."
+        },
+        {
+          "name": "facility",
+          "doc": "The syslog facility for the selector."
+        },
+        {
+          "name": "level",
+          "doc": "The syslog level for the selector."
+        },
+        {
+          "name": "action_type",
+          "doc": "The type of action: file, hostname, user or program."
+        },
+        {
+          "name": "action",
+          "doc": "The action for the entry."
+        },
+        {
+          "name": "target",
+          "doc": "The file in which to store the settings, defaults to\n      `/etc/syslog.conf`."
+        },
+        {
+          "name": "lens",
+          "doc": "The augeas lens used to parse the file"
+        }
+      ],
+      "providers": [
+        {
+          "name": "augeas",
+          "doc": "Uses Augeas API to update a syslog.conf entry"
+        }
+      ]
+    }
+  ],
+  "checksums": {
+    "CHANGELOG.md": "4e366cb326f814948ae747a33533f1b4",
+    "CONTRIBUTING.md": "251618ab3a22d7c2dc3458d50478a71e",
+    "Gemfile": "0a6c5e6463fc9d9d477d7e0e3fcae729",
+    "Gemfile.lock": "d90bcf873bf7a017efa5a74635fbc5f0",
+    "LICENSE": "0a23d6c579795bb78b0de2ba06b1dfeb",
+    "Modulefile": "9143f1fd15ce0659af229c377fa6ff75",
+    "Puppetfile": "a54905b8611a9f2b59d18e13710cde3a",
+    "Puppetfile.lock": "e8b96429f956c8661210df11f74a2f79",
+    "README.md": "130663182ad0be5dd67a36352bbce841",
+    "Rakefile": "d0a7bcdb74658217895c7f13d3f4b1de",
+    "docs/CHANGELOG.html": "ee7bc548b7c31624692016bce1fc3ae7",
+    "docs/CONTRIBUTING.html": "71781eea2793cff39e4ba8ce3eb9630d",
+    "docs/Makefile": "dbce98fb74120f337f72e78cd1f677d4",
+    "docs/README.html": "0271e2c64a2deeff6221092e242b029c",
+    "docs/buttondown.css": "f15e6924612f4c5ae477030bf7bf665b",
+    "docs/examples/host.md": "ccc23a5bc50a746c90a6890012d64ce7",
+    "docs/examples/kernel_parameter.md": "716f9890eef1a71bfbed77ef16219471",
+    "docs/examples/mailalias.md": "5e13bdf971e6c1ae81ce946c4cde9276",
+    "docs/examples/mounttab.md": "a244e500f1ce2d991e56dc93dc7cb869",
+    "docs/examples/nrpe_command.md": "6ae395751d493a28ca591078a6587695",
+    "docs/examples/sshd_config.md": "63debd40e438c17a394ed0fa005805b8",
+    "docs/examples/sshd_config_subsystem.md": "e5dacd86a8bb2679f08908ecbbb2f42f",
+    "docs/examples/sysctl.md": "9dcf5b2a310960a7cc3aeb1e8b83d693",
+    "docs/examples/syslog.md": "231514e5bb6494d123f50c11d02587c8",
+    "docs/examples.html": "b3a132939698c9a6d6ccdd1ffacbc515",
+    "docs/examples.md": "c576ae433e9941609613d03f615b9919",
+    "docs/examples_header.html": "6b96fe444bf6b8accc3e32c24a8490ec",
+    "docs/examples_header.md": "30ca99c44f2c022d61c33d3c951f5e4c",
+    "docs/images/augeasproviders-spec-augparse.png": "19df7091646b354bcf85903b28cdf2d6",
+    "docs/images/augeasproviders-spec-part1.png": "9d4bd03096614a39bf0d8beeb1537749",
+    "docs/images/augeasproviders-spec-specshould.png": "b803dd2e6acaa7e67d9c030aab312d4f",
+    "docs/index.html": "33e0369142c6dc29fda1e31ec1742a6a",
+    "docs/index.md": "374dbf0d63e77d11b53bb97cdf963090",
+    "docs/motw.html": "7bfe94da2f1cb68274febc86b5e769b8",
+    "docs/motw.md": "0227cd4d0aee940d1df0ebea7b5fcb06",
+    "docs/specs.html": "f4a30d7684a0b9cff200085a0ca98f1c",
+    "docs/specs.md": "9eb05fe66f1d4e3686515182bac19e38",
+    "lib/augeasproviders/mounttab/fstab.rb": "8cdf643bac551851520ac41d7e21e0eb",
+    "lib/augeasproviders/mounttab/vfstab.rb": "e92e3181cfba3801063916d3dcd828dd",
+    "lib/augeasproviders/mounttab.rb": "d0dd1845a9408148eed0d8dbb93790c2",
+    "lib/augeasproviders/provider.rb": "d2642f24b6f362e1506361cf4246a9ec",
+    "lib/augeasproviders.rb": "4730498403c2d9ced6d586669ae7bbbc",
+    "lib/puppet/provider/host/augeas.rb": "7791f13178bd922085d930bc7c364a6c",
+    "lib/puppet/provider/kernel_parameter/grub.rb": "9b5f9674bef86bbe955befd1c6cfbbc1",
+    "lib/puppet/provider/kernel_parameter/grub2.rb": "6271798f33862f2e88bf1e245618dfce",
+    "lib/puppet/provider/mailalias/augeas.rb": "620e38c283a8bc0ae8e58aa9312bf157",
+    "lib/puppet/provider/mounttab/augeas.rb": "24410763bf796ab28902e4c7e4607c0a",
+    "lib/puppet/provider/nrpe_command/augeas.rb": "a1bcdce77d9a00159452ad7f9c37ad49",
+    "lib/puppet/provider/sshd_config/augeas.rb": "19ac69ec2035bd65232bc867cdbe0e63",
+    "lib/puppet/provider/sshd_config_subsystem/augeas.rb": "711cc17884019f124ef4a1c45aa0ad9b",
+    "lib/puppet/provider/sysctl/augeas.rb": "b21f19a395ee5e5905283246e344a68e",
+    "lib/puppet/provider/syslog/augeas.rb": "7c9ae515721d5a405320d82f6604673e",
+    "lib/puppet/type/kernel_parameter.rb": "67001878bff3cf42389dba0c744013ca",
+    "lib/puppet/type/nrpe_command.rb": "79e20e9d9b2b15c4f7c94887d3ca7c78",
+    "lib/puppet/type/sshd_config.rb": "36328f551d350cb0d8202f4e75d27cc4",
+    "lib/puppet/type/sshd_config_subsystem.rb": "b20000fb8493a1bf42942211612dee00",
+    "lib/puppet/type/sysctl.rb": "dce6eaf785ab669694e01e48fe59e4af",
+    "lib/puppet/type/syslog.rb": "8dd63c8c899973d9741ea0fdea51e34d",
+    "manifests/init.pp": "33a2ec2e85db97f9b8b3e27d7b08e7d5",
+    "modules/mount_providers/CHANGELOG": "ac27c8d26fbe4a7135cdddaa368461a0",
+    "modules/mount_providers/Modulefile": "c634b0a325a74e40849076f7428554a2",
+    "modules/mount_providers/README.markdown": "fd174d9ff52af9c60cb2bf5f411393f8",
+    "modules/mount_providers/README.pdf": "53d025909a3b376ad4736a24a6a6bffa",
+    "modules/mount_providers/README_DEVELOPER.markdown": "030f475775dc81161a91535614056ee6",
+    "modules/mount_providers/README_DEVELOPER.pdf": "51521c96524102b1bf5d1eacafc8e2ce",
+    "modules/mount_providers/Rakefile": "d2c0725a2e84521a5dd812944f5b4c9b",
+    "modules/mount_providers/lib/puppet/provider/mountpoint/linux.rb": "0aeb2a4a24d52d70faaf485d23a5a65e",
+    "modules/mount_providers/lib/puppet/provider/mountpoint/solaris.rb": "dffba4eb8ec5dde41e6512353943b361",
+    "modules/mount_providers/lib/puppet/provider/mountpoint.rb": "d5b7272d54ac4681dd69e095916cd83a",
+    "modules/mount_providers/lib/puppet/provider/mounttab/parsed.rb": "1ca6b4fb0e9a5b6599777a268ee21cbb",
+    "modules/mount_providers/lib/puppet/type/mountpoint.rb": "afadc32ca6050acac8718531959db6b4",
+    "modules/mount_providers/lib/puppet/type/mounttab.rb": "f036f26730a3299fa548485383317a68",
+    "modules/mount_providers/spec/spec_helper.rb": "ba3d30365ae3c00566989ca0670aae04",
+    "modules/mount_providers/spec/unit/provider/mountpoint/linux_spec.rb": "4a7c2198ba952f022088b5a166266b2b",
+    "modules/mount_providers/spec/unit/provider/mountpoint/solaris_spec.rb": "05934bc9919d8e6b304474bd463e0869",
+    "modules/mount_providers/spec/unit/provider/mounttab/parsed_spec.rb": "f1f18ff491a3a706c6c1948956e8d682",
+    "modules/mount_providers/spec/unit/type/mountpoint_spec.rb": "d0631b134f6a520bb93ebb7f4185e8e8",
+    "modules/mount_providers/spec/unit/type/mounttab_spec.rb": "ef67202d36f8967c8e8c156ad5eada69",
+    "spec/fixtures/unit/augeasproviders/provider/full": "20380104252d133d336cec79930ac625",
+    "spec/fixtures/unit/puppet/host/broken": "7657a3a3c58088d06aa33ab174622ef4",
+    "spec/fixtures/unit/puppet/host/empty": "68b329da9893e34099c7d8ad5cb9c940",
+    "spec/fixtures/unit/puppet/host/full": "20380104252d133d336cec79930ac625",
+    "spec/fixtures/unit/puppet/kernel_parameter_grub/broken": "3d1c58f1d44d0231f34bae6b2e08c3df",
+    "spec/fixtures/unit/puppet/kernel_parameter_grub/full": "11c31975ef0c4ae6749b326d02b3f44a",
+    "spec/fixtures/unit/puppet/kernel_parameter_grub2/broken": "dd0b6633ef7bf01593927e0953555749",
+    "spec/fixtures/unit/puppet/kernel_parameter_grub2/full": "ff203824922bb2bc5e823ffd0d9287f5",
+    "spec/fixtures/unit/puppet/mailalias/broken": "7657a3a3c58088d06aa33ab174622ef4",
+    "spec/fixtures/unit/puppet/mailalias/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/mailalias/full": "d9b9c7aad242e609402cf588ec5a7486",
+    "spec/fixtures/unit/puppet/mounttab_fstab/broken": "14e37dc984061fe2f3b32f666872b9aa",
+    "spec/fixtures/unit/puppet/mounttab_fstab/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/mounttab_fstab/full": "36122c5b2fc9619838c0f009c41612c0",
+    "spec/fixtures/unit/puppet/mounttab_vfstab/broken": "c670fb8d65147a83eea6baeec218a093",
+    "spec/fixtures/unit/puppet/mounttab_vfstab/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/mounttab_vfstab/full": "73cd949d3b00bff34b25e21e84197e8d",
+    "spec/fixtures/unit/puppet/nrpe_command/broken": "7657a3a3c58088d06aa33ab174622ef4",
+    "spec/fixtures/unit/puppet/nrpe_command/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/nrpe_command/full": "f51ce4ffb282fdd0782db7993ea230a7",
+    "spec/fixtures/unit/puppet/sshd_config/broken": "180da60c75056519fdaf4b4e8fe73e56",
+    "spec/fixtures/unit/puppet/sshd_config/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/sshd_config/full": "2152c57f394aa75347bba1d8666fd371",
+    "spec/fixtures/unit/puppet/sshd_config/nomatch": "a276b6b8e3fbc2e6c7915ba0de10950c",
+    "spec/fixtures/unit/puppet/sshd_config_subsystem/broken": "180da60c75056519fdaf4b4e8fe73e56",
+    "spec/fixtures/unit/puppet/sshd_config_subsystem/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/sshd_config_subsystem/full": "336b6c3da647bb3b052a8bc178425c02",
+    "spec/fixtures/unit/puppet/sysctl/broken": "4ad66fadf9b67382b16817c66105b8a5",
+    "spec/fixtures/unit/puppet/sysctl/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/sysctl/full": "f647c9efc637e452c88259ab7f90e71c",
+    "spec/fixtures/unit/puppet/sysctl/small": "f7c2d9f63cd00cca8d055bcf83e4911c",
+    "spec/fixtures/unit/puppet/syslog/broken": "9d1884537b34bb75b6545014a85b5296",
+    "spec/fixtures/unit/puppet/syslog/empty": "d41d8cd98f00b204e9800998ecf8427e",
+    "spec/fixtures/unit/puppet/syslog/full": "3509686927da43b107dc1090d0caaaae",
+    "spec/lib/augeas_spec/augparse.rb": "80dc36b89bcf42cf6977cdc263997d76",
+    "spec/lib/augeas_spec/fixtures.rb": "9a0eecc05e2bfd551fdc9675df7c43f0",
+    "spec/lib/augeas_spec.rb": "347f96f25a5610c69519af8c05cf35d5",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "spec/spec_helper.rb": "d1d5e8cebbb157bc826fa1afdab0029b",
+    "spec/unit/augeasproviders/provider_spec.rb": "f7412b9683af2cc7f0889f70b2d8c490",
+    "spec/unit/puppet/host_spec.rb": "f34cad9d9a4a55a9e0fb32ad6d1ee98e",
+    "spec/unit/puppet/kernel_parameter_grub2_spec.rb": "71bd279b8ad3894897a88a58683f3efe",
+    "spec/unit/puppet/kernel_parameter_grub_spec.rb": "741aca2e7e12ca93272118d34881b877",
+    "spec/unit/puppet/mailalias_spec.rb": "9bdf6d8fd7a4d11232c51de106677885",
+    "spec/unit/puppet/mounttab_fstab_spec.rb": "b20a87504a61d4b1911fa676980da636",
+    "spec/unit/puppet/mounttab_vfstab_spec.rb": "fe2e7e924e62c2958d360c8d445f628d",
+    "spec/unit/puppet/nrpe_command_spec.rb": "76a2c16c4efe243712aee07395496852",
+    "spec/unit/puppet/sshd_config_spec.rb": "e272948c473ff3bc6c2f2ab9381168c5",
+    "spec/unit/puppet/sshd_config_subsystem_spec.rb": "67981a6574c38f49ec3edec9be8832cf",
+    "spec/unit/puppet/sysctl_spec.rb": "161f223719f7742f98bed9ccb54fb87d",
+    "spec/unit/puppet/syslog_spec.rb": "2614ea696eef015e84cb68f52ae00670"
+  }
+}
