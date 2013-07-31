@@ -1,4 +1,4 @@
-# CentOS 6 VirtualBox Vagrant Box with Splunk install
+# CentOS 6 Vagrant Box with Splunk install
 
 Installs and sets running Splunk, on top of a [@core CentOS6 Vagrant
 Box](http://vntx-box.s3.amazonaws.com/centos6.box).
