@@ -12,6 +12,8 @@
       yum:  name=/vagrant/sw/splunk-6.0-182037-linux-2.6-x86_64.rpm state=present
     - name: Ensure Splunk service is configured
       copy: src=files/splunk.init dest=/etc/init.d/splunk owner=root group=root mode=0755
+      notify:
+        - restart splunk
 
   handlers:
     - name: restart splunk
