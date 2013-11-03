@@ -55,15 +55,10 @@ Vagrant.configure("2") do |config|
   # the file base.pp in the manifests_path directory.
   #
 
-  # first, get puppet on there
-  config.vm.provision :shell, :path => "centos6.sh"
-
-  # then hand over to puppet to do the rest
-  config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "puppet/manifests"
-    puppet.manifest_file  = "bootstrap.pp"
-    puppet.module_path    = "puppet/modules"
-    puppet.options        = "--hiera_config /vagrant/hiera.yaml"
+  # provision with ansible
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook          = "playbook.yaml"
+    ansible.sudo              = true
+    ansible.host_key_checking = false
   end
 end
-
