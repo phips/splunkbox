@@ -3,6 +3,8 @@
 Installs and sets running Splunk, on top of a [@core CentOS6 Vagrant
 Box](http://vntx-box.s3.amazonaws.com/centos6.box).
 
+Tested with CentOS 6.4 64bit and Splunk 6.0-182037 on Nov 3rd 2013.
+
 You need to have [Ansible](http://ansibleworks.com) installed prior to 
 spinning this box up.
 
