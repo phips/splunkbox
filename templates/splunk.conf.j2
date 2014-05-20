@@ -1,0 +1,35 @@
+# {{ ansible_managed }}
+
+server {
+{% if ssl_enabled is defined -%}
+    listen 443 ssl;
+{% else %}
+    listen 80 default_server;
+{% endif %}
+    server_name _;
+
+    access_log  /var/log/nginx/splunk_access.log;
+    error_log   /var/log/nginx/splunk_error.log;
+
+{% if ssl_enabled is defined %}
+    ssl                       on;
+    ssl_certificate           certs/***PUT_YOUR_FILE_HERE***;
+    ssl_certificate_key       certs/***PUT_YOUR_FILE_HERE***;
+    ssl_session_timeout       5m;
+    ssl_ciphers               HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache         shared:SSL:128m;
+{% endif %}
+
+    location / {
+{% if auth_enabled is defined -%}
+        auth_basic           "Please Login";
+        auth_basic_user_file auth/htpasswd;
+{% endif %}
+        proxy_pass http://localhost:8000/;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
