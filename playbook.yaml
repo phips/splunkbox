@@ -1,10 +1,10 @@
 ---
-- hosts: default
+- hosts: head
   vars:
-      splunkver: 6.1.1-207789-linux-2.6-x86_64
-      installapps: true
-      # ssl_enabled
-      # auth_enabled
+    splunkver: 6.1.2-213098-linux-2.6-x86_64
+    installapps: true
+    # ssl_enabled
+    # auth_enabled
 
   tasks:
     - name: Ensure libselinux-python installed
@@ -31,7 +31,7 @@
       lineinfile:
         dest=/etc/hosts
         regexp="^{{ ansible_default_ipv4.address }}.+$"
-        line="{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}"
+        line="{{ ansible_default_ipv4.address }} {{ inventory_hostname }}
 
     # pulls from EPEL
     - name: Ensure nginx is installed
