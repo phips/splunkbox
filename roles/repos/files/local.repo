@@ -1,0 +1,5 @@
+[local]
+name=Packages downloaded from elsewhere
+baseurl=file:///vagrant/rpms
+enabled=1
+gpgcheck=0

@@ -1,0 +1,16 @@
+---
+# tasks file for repos
+# vim: set syn=ansible ts=2 sw=2:
+
+- name: Ensure fastestmirror Yum plugin is disabled
+  lineinfile: dest=/etc/yum/pluginconf.d/fastestmirror.conf
+              regexp='^enabled=' line='enabled=0' state=present
+
+- name: Ensure EPEL RPM installed
+  yum:  name=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm 
+        state=present
+  when: installepel
+
+- name: Ensure local repo set up
+  copy: src=local.repo dest=/etc/yum.repos.d/local.repo
+        owner=root group=root mode=0644

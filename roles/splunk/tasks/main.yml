@@ -1,0 +1,30 @@
+---
+# tasks file for splunk
+
+- name: Ensure Splunk is installed
+  yum: name={{ splunk_files }}/splunk-{{ splunk_version }}.rpm state=present
+
+- name: Ensure required Splunk users are present
+  template: src=passwd.j2 dest=/opt/splunk/etc/passwd
+            owner=splunk group=splunk mode=0600
+  when: splunk_accts
+  notify:
+    - restart splunk
+
+- name: Ensure any required apps are installed
+  unarchive: src={{ item.src }}
+             dest={{ item.dest }}
+             creates={{ item.dest }}/{{ item.creates }}
+  when: splunk_apps
+  with_items: splunk_apps
+  notify:
+    - restart splunk
+
+- name: Ensure Splunk service is configured
+  copy: src=splunk.init dest=/etc/init.d/splunk
+        owner=root group=root mode=0755
+  notify:
+    - restart splunk
+
+- name: Start Splunk service
+  service: name=splunk state=started enabled=yes

@@ -1,0 +1,6 @@
+---
+# handlers file for splunk
+
+- name: restart splunk
+  service: name=splunk state=restarted
+

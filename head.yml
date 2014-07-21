@@ -1,0 +1,7 @@
+---
+- hosts: head
+  sudo: true
+  roles:
+    - shell
+    - hosts
+    - splunk

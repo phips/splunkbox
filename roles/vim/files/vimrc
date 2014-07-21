@@ -1,0 +1,158 @@
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+" vim: set bg=dark ts=2 sw=2 et:
+set nocompatible
+
+set term=xtermc
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+set nobackup        " do not keep a backup file, use versions instead
+set history=50      " keep 50 lines of command line history
+set ruler       " show the cursor position all the time
+set showcmd     " display incomplete commands
+set incsearch       " do incremental searching
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" This is an alternative that also works in block mode, but the deleted
+" text is lost and it only works for putting the current register.
+"vnoremap p "_dp
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+if &term =~ "xterm"
+  if has("terminfo")
+    set t_Co=8
+    set t_Sf=[3%p1%dm
+    set t_Sb=[4%p1%dm
+  else
+    set t_Co=8
+    set t_Sf=[3%dm
+    set t_Sb=[4%dm
+  endif
+endif
+
+" Tab stops at 4 characters. Expand to spaces always.
+let mytab=4
+execute "set ts=".mytab
+execute "set shiftwidth=".mytab
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+
+  au! BufRead,BufNewFile *.pp     setfiletype puppet
+  au! BufRead,BufNewFile *.md     setfiletype markdown
+
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " textwidth for various filetypes
+  autocmd FileType text setlocal textwidth=78
+
+  " YAML file editing, change tab stops
+  autocmd FileType yaml setlocal ts=2 sw=2
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  augroup END
+
+  " templates
+  autocmd BufNewFile * silent! 0r $HOME/vim/%:e.tpl
+
+else
+
+  set autoindent        " always set autoindenting on
+
+endif " has("autocmd")
+
+" markp edits
+" The ultimate reference - http://vim.wikia.com/wiki/Best_Vim_Tips
+"
+" Perl compiling stuff. Groovy.
+set makeprg=$VIMRUNTIME/tools/efm_perl.pl\ -c\ %\ $*
+set errorformat=%f:%l:%m
+map <F10> :mak<CR>
+
+" When using CTRL-W_ only status lines will show for minimised windows.
+set winminheight=0
+
+set expandtab
+
+" Smart searching - overrides ic when caps are used in search pattern
+set ic
+set smartcase
+
+" status line, only if >1 window. 2=always
+set laststatus=2
+
+" date '+\%e-\%b-\%Y'
+set bg=dark
+
+" completion
+set wildmenu
+set wildmode=list:longest,full
+
+" https://github.com/gmarik/vundle.git
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+let g:vundle_default_git_proto='https'
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+
+" shift-Y yanks to EOL, not whole line
+map Y y$
+
+" matchit
+source $VIMRUNTIME/macros/matchit.vim
+
+" statusline
+set stl=%<%f\ %{SyntasticStatuslineFlag()}\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+let g:syntastic_enable_balloons = 1
+let g:syntastic_auto_loc_list = 1
+
+let g:tagbar_type_puppet = {
+    \ 'ctagstype': 'puppet',
+    \ 'kinds': [
+        \'c:class',
+        \'s:site',
+        \'n:node',
+        \'d:definition'
+      \]
+    \}
+
+noremap <Leader>t :TagbarToggle<CR>
+
+" Install bundles
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
+Bundle 'scrooloose/syntastic'
+Bundle 'vim-scripts/loremipsum'
+Bundle 'vim-perl/vim-perl'
+Bundle 'majutsushi/tagbar'
+Bundle 'elzr/vim-json'
+Bundle 'bling/vim-airline'
+Bundle 'yko/mojo.vim'
+Bundle 'chase/vim-ansible-yaml'
+Bundle 'tangledhelix/vim-kickstart'

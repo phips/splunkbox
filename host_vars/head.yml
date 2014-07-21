@@ -1,0 +1,36 @@
+---
+# variables for 'head'
+splunk_files: /vagrant/roles/splunk/files
+splunk_version: 6.1.2-213098-linux-2.6-x86_64
+
+# password123 (:-!)
+splunk_accts:
+  - name: Administrator
+    id: admin
+    passwd: "$6$NsW2tSQShrvw6JIk$.8a1xTmYV4/KmxPslasJjlMWdfa6wPQnVqt5ZWUQnmNTKl6BLoeYIpE/sOHhRmjuY.kKWjaFnYr0JTF2tOZxi1"
+    roles: admin
+    email: mark@vntx.cc
+#  - name: Ansible
+#    id: awx
+#    passwd: "$6$bDSoY.kND5yb4tEY$.IKVftYmSSQO2uDcX/LrQJmNthK20OmiXbOTw99Z.Q7SEYQjcY5Fa.0TLB1UYK0CR92DOxLyxHnOrYawE9XdD1"
+#    roles: "admin;user"
+#    email: none@none.com
+
+splunk_apps_dest: &dest /opt/splunk/etc/apps
+splunk_apps:
+  - name: Sideview Utils
+    src: sideview-utils-lgpl_135.tgz
+    # prepend splunk_apps_dest
+    dest: *dest
+    creates: sideview_utils
+  - name: Splunk on Splunk
+    src: sos-splunk-on-splunk_32.tgz
+    dest: *dest
+    creates: sos
+#   - name: Splunk-6 dashboard examples
+#     src: splunk-6x-dashboard-examples_201.tgz
+#     creates: simple_xml_examples
+#   - name: Splunk App for UNIX and Linux
+#     src: splunk-app-for-unix-and-linux_501.tgz
+#     creates: splunk_app_for_unix
+

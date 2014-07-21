@@ -1,0 +1,20 @@
+---
+# tasks file for vim
+# vim: set syn=ansible:
+
+- name: Ensure vimrc present for vagrant user
+  copy: src=vimrc dest=/home/vagrant/.vimrc
+        owner=vagrant group=vagrant mode=0644
+
+- name: Ensure Bundle path exists
+  file: path=/home/vagrant/.vim/bundle state=directory
+        owner=vagrant group=vagrant mode=0755
+  sudo: yes
+  sudo_user: vagrant
+  
+- name: Ensure vundle is installed
+  git:  repo=https://github.com/gmarik/vundle.git
+        dest=/home/vagrant/.vim/bundle/vundle
+        depth=1
+  sudo: yes
+  sudo_user: vagrant
