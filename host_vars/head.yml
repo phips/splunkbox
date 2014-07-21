@@ -1,8 +1,5 @@
 ---
 # variables for 'head'
-splunk_files: /vagrant/roles/splunk/files
-splunk_version: 6.1.2-213098-linux-2.6-x86_64
-splunkfwdr_files: /vagrant/roles/splunkfwdr/files
 
 # password123 (:-!)
 splunk_accts:

@@ -4,6 +4,10 @@
 - name: Ensure Splunk is installed
   yum: name={{ splunk_files }}/splunk-{{ splunk_version }}.rpm state=present
 
+- name: Ensure Splunk bindir is on the path
+  copy: src=splunk.sh dest=/etc/profile.d/splunk.sh
+        owner=root group=root mode=0644
+
 - name: Ensure required Splunk users are present
   template: src=passwd.j2 dest=/opt/splunk/etc/passwd
             owner=splunk group=splunk mode=0600

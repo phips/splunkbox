@@ -4,3 +4,47 @@
 - name: Ensure Splunkforwarder is installed
   yum:  name={{ splunkfwdr_files }}/splunkforwarder-{{ splunk_version }}.rpm
         state=present
+
+- name: Ensure Splunk bindir is on the path
+  copy: src=splunk.sh dest=/etc/profile.d/splunk.sh
+        owner=root group=root mode=0644
+
+- name: Ensure required Splunk users are present
+  template: src=passwd.j2 dest=/opt/splunkforwarder/etc/passwd
+            owner=splunk group=splunk mode=0600
+  when: splunkfwdr_accts
+  notify:
+    - restart splunk
+
+- name: Ensure Splunkforwarder service is configured
+  copy: src=splunk.init dest=/etc/init.d/splunk
+        owner=root group=root mode=0755
+  notify:
+    - restart splunk
+
+- name: Start Splunk service
+  service: name=splunk state=started enabled=yes
+
+# - name: Ensure logged in
+#   command: {{ splunkfwdr_bin }} login -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}
+
+- name: Get status of forwarding
+  command: "{{ splunkfwdr_bin }} list forward-server"
+  register: status
+
+- name: Ensure we're forwarding to head
+  command: "{{ splunkfwdr_bin }} add forward-server {{ splunkfwdr_fwd_to }} -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}"
+  notify:
+    - restart splunk
+  when: splunkfwdr_fwd_to not in status.stdout
+
+- name: Get status of log forwarding
+  command: "{{ splunkfwdr_bin }} list monitor"
+  register: logstatus
+
+- name: Ensure we're sending all our logs to head
+  command: "{{ splunkfwdr_bin }} add monitor /var/log -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}"
+  notify:
+    - restart splunk
+  when: "'/var/log' not in logstatus.stdout"
+

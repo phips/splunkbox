@@ -1,2 +1,5 @@
 ---
 # defaults file for splunkfwdr
+
+splunkfwdr_path: /opt/splunkforwarder
+splunkfwdr_bin: /opt/splunkforwarder/bin/splunk

@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+{% for item in splunkfwdr_accts %}
+:{{ item.id }}:{{ item.passwd }}::{{ item.name }}:{{ item.roles }}:{{ item.email }}::
+{% endfor %}

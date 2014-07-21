@@ -1,0 +1,14 @@
+# all forwarders
+
+splunkfwdr_accts:
+  - name: Administrator
+    id: admin
+    passwd: "$6$NsW2tSQShrvw6JIk$.8a1xTmYV4/KmxPslasJjlMWdfa6wPQnVqt5ZWUQnmNTKl6BLoeYIpE/sOHhRmjuY.kKWjaFnYr0JTF2tOZxi1"
+    roles: admin
+    email: mark@vntx.cc
+
+# in reality, this wouldn't happen
+# lots of options: ansible-vault this, etc
+splunkfwdr_u: admin
+splunkfwdr_p: password123
+splunkfwdr_fwd_to: head:9997
