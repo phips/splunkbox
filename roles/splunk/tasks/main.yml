@@ -15,9 +15,17 @@
   unarchive: src={{ item.src }}
              dest={{ item.dest }}
              creates={{ item.dest }}/{{ item.creates }}
-             owner=splunk group=splunk
   when: item.state == 'present'
   with_items: splunk_apps
+  notify:
+    - restart splunk
+
+- name: Ensure installed apps have correct file ownership
+  file: path={{ item.dest }}/{{ item.creates }}
+        recurse=true
+        owner={{ splunk_user }} group={{ splunk_group }}
+  with_items: splunk_apps
+  when: item.state == 'present'
   notify:
     - restart splunk
 
