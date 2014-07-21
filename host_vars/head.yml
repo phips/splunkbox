@@ -23,14 +23,20 @@ splunk_apps:
     # prepend splunk_apps_dest
     dest: *dest
     creates: sideview_utils
+    state: present
   - name: Splunk on Splunk
     src: sos-splunk-on-splunk_32.tgz
     dest: *dest
     creates: sos
-#   - name: Splunk-6 dashboard examples
-#     src: splunk-6x-dashboard-examples_201.tgz
-#     creates: simple_xml_examples
+    state: present
+  - name: Splunk-6 dashboard examples
+    src: splunk-6x-dashboard-examples_201.tgz
+    dest: *dest
+    creates: simple_xml_examples
+    state: absent
 #   - name: Splunk App for UNIX and Linux
 #     src: splunk-app-for-unix-and-linux_501.tgz
+#     dest: *dest
 #     creates: splunk_app_for_unix
+#     state: present
 

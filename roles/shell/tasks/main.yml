@@ -5,8 +5,3 @@
   template: src=aliases.sh.j2 dest=/etc/profile.d/aliases.sh
             owner=root group=root mode=0644
 
-- name: Ensure .gitconfig in place
-  copy: src=gitconfig dest=/home/vagrant/.gitconfig
-  sudo: yes
-  sudo_user: vagrant
-  when: inventory_hostname == 'master'

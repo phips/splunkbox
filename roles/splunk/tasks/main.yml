@@ -15,8 +15,17 @@
   unarchive: src={{ item.src }}
              dest={{ item.dest }}
              creates={{ item.dest }}/{{ item.creates }}
-  when: splunk_apps
+             owner=splunk group=splunk
+  when: item.state == 'present'
   with_items: splunk_apps
+  notify:
+    - restart splunk
+
+- name: Remove any apps marked for deletion
+  file: path={{ item.dest }}/{{ item.creates }}
+        state=absent
+  with_items: splunk_apps
+  when: item.state == 'absent'
   notify:
     - restart splunk
 
