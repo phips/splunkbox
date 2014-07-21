@@ -20,8 +20,11 @@ Vagrant.configure("2") do |config|
 
         # provision with ansible
         fwd1.vm.provision "ansible" do |ansible|
-            ansible.playbook          = "site.yml"
-            ansible.sudo              = true
+            ansible.groups = {
+              "forwarders" => ["fwd1"],
+            }
+            ansible.playbook = "site.yml"
+            ansible.limit = 'none'
             ansible.host_key_checking = false
         end
     end
@@ -31,8 +34,11 @@ Vagrant.configure("2") do |config|
 
         # provision with ansible
         fwd2.vm.provision "ansible" do |ansible|
-            ansible.playbook          = "site.yml"
-            ansible.sudo              = true
+            ansible.groups = {
+              "forwarders" => ["fwd1", "fwd2"],
+            }
+            ansible.playbook = "site.yml"
+            ansible.limit = 'none'
             ansible.host_key_checking = false
         end
     end

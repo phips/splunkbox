@@ -2,6 +2,6 @@
 - hosts: head
   sudo: true
   roles:
-    - shell
-    - hosts
-    - splunk
+    - { role: shell,  tags: shell }
+    - { role: hosts,  tags: hosts }
+    - { role: splunk, tags: splunk }

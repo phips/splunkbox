@@ -1,0 +1,6 @@
+---
+# tasks file for splunkfwdr
+
+- name: Ensure Splunkforwarder is installed
+  yum:  name={{ splunkfwdr_files }}/splunkforwarder-{{ splunk_version }}.rpm
+        state=present

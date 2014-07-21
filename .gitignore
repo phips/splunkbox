@@ -3,5 +3,5 @@
 .vagrant
 vagrant_ansible_inventory_default
 sw
-roles/splunk/files/*.tgz
-roles/splunk/files/*.rpm
+roles/*/files/*.tgz
+roles/*/files/*.rpm
