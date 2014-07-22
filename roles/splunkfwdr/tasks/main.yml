@@ -29,7 +29,7 @@
 #   command: {{ splunkfwdr_bin }} login -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}
 
 - name: Get status of forwarding
-  command: "{{ splunkfwdr_bin }} list forward-server"
+  command: "{{ splunkfwdr_bin }} list forward-server -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}"
   register: status
 
 - name: Ensure we're forwarding to head
@@ -46,5 +46,7 @@
   command: "{{ splunkfwdr_bin }} add monitor /var/log -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}"
   notify:
     - restart splunk
-  when: "'/var/log' not in logstatus.stdout"
+  # look at the Python RE module to understand the ?! - it's a negative lookahead
+  # https://docs.python.org/2.7/library/re.html
+  when: 'not logstatus.stdout | search("/var/log(?!/)")'
 

@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+# http://docs.splunk.com/Documentation/Splunk/6.1.2/admin/Inputsconf
+
+[default]
+host = {{ inventory_hostname }}
+
+[splunktcp://{{ splunk_tcp_listen_port }}]
+connection_host = ip

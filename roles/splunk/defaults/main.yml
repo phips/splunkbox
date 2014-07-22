@@ -2,3 +2,4 @@
 # defaults file for splunk
 splunk_user: splunk
 splunk_group: splunk
+splunk_tcp_listen_port: 9997

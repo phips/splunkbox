@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
               "forwarders" => ["fwd1"],
             }
             ansible.playbook = "site.yml"
-            ansible.limit = 'none'
+            ansible.skip_tags = 'splunk'
             ansible.host_key_checking = false
         end
     end
@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
               "forwarders" => ["fwd1", "fwd2"],
             }
             ansible.playbook = "site.yml"
-            ansible.limit = 'none'
+            ansible.skip_tags = 'splunk'
             ansible.host_key_checking = false
         end
     end

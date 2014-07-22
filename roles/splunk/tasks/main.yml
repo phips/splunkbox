@@ -15,6 +15,11 @@
   notify:
     - restart splunk
 
+- name: Ensure Splunk is listening for forwarders
+  template: src=inputs.conf.j2 dest=/opt/splunk/etc/system/local/inputs.conf
+            owner={{ splunk_user }} group={{ splunk_group }}
+  when: splunk_receiver | default(False)
+
 - name: Ensure any required apps are installed
   unarchive: src={{ item.src }}
              dest={{ item.dest }}
