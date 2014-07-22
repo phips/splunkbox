@@ -8,10 +8,9 @@ Vagrant.configure("2") do |config|
 
         # provision with ansible
         head.vm.provision "ansible" do |ansible|
-            ansible.playbook          = "site.yml"
-            ansible.sudo              = true
+            ansible.playbook = "site.yml"
+            ansible.skip_tags = 'splunk'
             ansible.host_key_checking = false
-            ansible.extra_vars        = { installapps: false }
         end
     end
     # forwarder1

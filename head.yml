@@ -1,7 +1,11 @@
 ---
+- hosts: all
+  sudo: true
+  roles:
+    - { role: hosts, tags: hosts }
+
 - hosts: head
   sudo: true
   roles:
     - { role: shell,  tags: shell }
-    - { role: hosts,  tags: hosts }
     - { role: splunk, tags: splunk }
