@@ -1,2 +1,2 @@
 # sh -x me
-curl -Lo splunk-6.1.2-213098-linux-2.6-x86_64.rpm 'http://www.splunk.com/page/download_track?file=6.1.2/splunk/linux/splunk-6.1.2-213098-linux-2.6-x86_64.rpm&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=6.1.2&product=splunk&typed=release'
+curl -Lo splunk-6.2.3-264376-linux-2.6-x86_64.rpm 'http://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=Linux&version=6.2.3&product=splunk&filename=splunk-6.2.3-264376-linux-2.6-x86_64.rpm&wget=true'

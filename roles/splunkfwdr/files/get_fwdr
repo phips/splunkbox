@@ -1,3 +1,3 @@
 # splunk forwarder
 # sh -x me
-curl -Lo splunkforwarder-6.1.2-213098-linux-2.6-x86_64.rpm 'http://www.splunk.com/page/download_track?file=6.1.2/universalforwarder/linux/splunkforwarder-6.1.2-213098-linux-2.6-x86_64.rpm&ac=&wget=true&name=wget&platform=Linux&architecture=x86_64&version=6.1.2&product=splunk&typed=release'
+curl -Lo splunkforwarder-6.2.3-264376-linux-2.6-x86_64.rpm 'http://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=Linux&version=6.2.3&product=universalforwarder&filename=splunkforwarder-6.2.3-264376-linux-2.6-x86_64.rpm&wget=true'
