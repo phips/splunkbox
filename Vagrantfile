@@ -2,8 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "c65"
-  # config.vm.box_url = "http://vntx.cc/boxes/centos65.box"
+  config.vm.box = "centos7"
   config.vm.network :forwarded_port, guest: 80, host: 8080
 
   config.vm.provider :virtualbox do |vb|
@@ -12,7 +11,7 @@ Vagrant.configure("2") do |config|
 
   # provision with ansible
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook          = "playbook.yaml"
+    ansible.playbook          = "playbook.yml"
     ansible.sudo              = true
     ansible.host_key_checking = false
     # ansible.extra_vars        = { installapps: false }

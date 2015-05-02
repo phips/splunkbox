@@ -1,7 +1,7 @@
 ---
 - hosts: default
   vars:
-      splunkver: 6.1.1-207789-linux-2.6-x86_64
+      splunkver: 6.2.3-264376-linux-2.6-x86_64
       installapps: true
       # ssl_enabled
       # auth_enabled
@@ -107,4 +107,4 @@
     - name: restart nginx
       service: name=nginx state=restarted
 
-# vim: set ts=2 sw=2 et syn=ansible:
+# vim: set ts=2 sw=2 et ft=ansible:
