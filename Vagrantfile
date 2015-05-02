@@ -4,8 +4,7 @@
 Vagrant.configure("2") do |config|
     # search head
     config.vm.define "head", primary: true do |head|
-        head.vm.box = "c65lvm"
-        head.vm.box_url = "http://vntx.cc/boxes/c65lvm_vmware.box"
+        head.vm.box = "centos7"
 
         # provision with ansible
         head.vm.provision "ansible" do |ansible|
@@ -16,8 +15,7 @@ Vagrant.configure("2") do |config|
     end
     # forwarder1
     config.vm.define "fwd1" do |fwd1|
-        fwd1.vm.box = "c65lvm"
-        fwd1.vm.box_url = "http://vntx.cc/boxes/c65lvm_vmware.box"
+        fwd1.vm.box = "centos7"
 
         # provision with ansible
         fwd1.vm.provision "ansible" do |ansible|
@@ -31,8 +29,7 @@ Vagrant.configure("2") do |config|
     end
     # forwarder2
     config.vm.define "fwd2" do |fwd2|
-        fwd2.vm.box = "c65lvm"
-        fwd2.vm.box_url = "http://vntx.cc/boxes/c65lvm_vmware.box"
+        fwd2.vm.box = "centos7"
 
         # provision with ansible
         fwd2.vm.provision "ansible" do |ansible|
