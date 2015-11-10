@@ -2,7 +2,7 @@
 - hosts: default
   vars:
       splunkver: 6.2.3-264376-linux-2.6-x86_64
-      installapps: true
+      installapps: False
       # ssl_enabled
       # auth_enabled
 
@@ -14,14 +14,8 @@
       copy: src=files/aliases.sh dest=/etc/profile.d/aliases.sh
             owner=root group=root mode=0644
 
-    - name: Ensure EPEL GPG key is present
-      copy: src=files/RPM-GPG-KEY-EPEL-6
-            dest=/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
-            owner=root group=root mode=0644
-
     - name: Ensure EPEL repo is configured
-      copy: src=files/epel.repo dest=/etc/yum.repos.d/epel.repo
-            owner=root group=root mode=0644
+      shell: rpm -q epel-release || yum install -y http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
     - name: Ensure hostname set
       hostname: name={{ inventory_hostname }}

@@ -1,12 +1,12 @@
 # CentOS 6 Vagrant Box with Splunk install via Ansible
 
-Installs and sets running Splunk, on top of a [@core CentOS6 Vagrant Box](http://vntx.cc/boxes/centos65.box).
+Installs and sets running Splunk, on top of a [@core CentOS Vagrant Box](http://vntx.cc/boxes/centos65.box).
 
-Tested with CentOS 6.5 64bit and Splunk 6.1.1-207789 as of May 2014.
+Tested with CentOS 7 64bit and Splunk 6.2.3-264376 as of November 2015.
 
 You need to have [Ansible](http://ansible.com) installed prior to spinning this box up.
 
-Look at [playbook.yml](http://github.com/phips/splunkbox/blob/master/playbook.yml) to see what Ansible is doing to the base CentOS6 [box](http://docs.vagrantup.com/v2/virtualbox/boxes.html).
+Look at [playbook.yml](http://github.com/phips/splunkbox/blob/master/playbook.yml) to see what Ansible is doing to the base CentOS [box](http://docs.vagrantup.com/v2/virtualbox/boxes.html).
 
 You'll need to download the Splunk RPM and put it in a sw/ directory off of wherever you clone this to. Check it's the same version as mentioned in [playbook.yml](http://github.com/phips/splunkbox/blob/master/playbook.yml) and adjust the filename accordingly if it's not.
 
