@@ -2,9 +2,9 @@
 
 [User Group discussion on LinkedIn](http://linkd.in/1nNMDLw)
 
-Installs and sets running Splunk, on a CentOS 6 install inside of [Vagrant](http://vagrantup.com).
+Installs and sets running Splunk, on a CentOS install inside of [Vagrant](http://vagrantup.com).
 
-Tested with CentOS 6.5 64bit and Splunk 6.1.2-213098 as of July 2014.
+Tested with CentOS 7 64bit and Splunk splunk-6.2.3-264376 as of November 2015.
 
 You need to have [Ansible](http://ansible.com) installed prior to spinning this box up.
 
