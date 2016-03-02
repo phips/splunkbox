@@ -2,28 +2,44 @@
 # tasks file for splunkfwdr
 
 - name: Ensure Splunkforwarder is installed
-  yum:  name={{ splunkfwdr_files }}/splunkforwarder-{{ splunk_version }}.rpm
-        state=present
+  yum:
+    name: "{{ splunkfwdr_files }}/splunkforwarder-{{ splunk_version }}.rpm"
+    state: present
 
 - name: Ensure Splunk bindir is on the path
-  copy: src=splunk.sh dest=/etc/profile.d/splunk.sh
-        owner=root group=root mode=0644
+  copy:
+    src: splunk.sh
+    dest: /etc/profile.d/splunk.sh
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Ensure required Splunk users are present
-  template: src=passwd.j2 dest=/opt/splunkforwarder/etc/passwd
-            owner=splunk group=splunk mode=0600
+  template:
+    src: passwd.j2
+    dest: /opt/splunkforwarder/etc/passwd
+    owner: splunk
+    group: splunk
+    mode: 0600
   when: splunkfwdr_accts
   notify:
     - restart splunk
 
 - name: Ensure Splunkforwarder service is configured
-  copy: src=splunk.init dest=/etc/init.d/splunk
-        owner=root group=root mode=0755
+  copy:
+    src: splunk.init
+    dest: /etc/init.d/splunk
+    owner: root
+    group: root
+    mode: 0755
   notify:
     - restart splunk
 
 - name: Start Splunk service
-  service: name=splunk state=started enabled=yes
+  service:
+    name: splunk
+    state: started
+    enabled: yes
 
 # - name: Ensure logged in
 #   command: {{ splunkfwdr_bin }} login -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}
@@ -32,7 +48,7 @@
   command: "{{ splunkfwdr_bin }} list forward-server -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}"
   register: status
 
-- name: Ensure we're forwarding to head
+- name: Ensure we are forwarding to head
   command: "{{ splunkfwdr_bin }} add forward-server {{ splunkfwdr_fwd_to }} -auth {{ splunkfwdr_u }}:{{ splunkfwdr_p }}"
   notify:
     - restart splunk

@@ -2,5 +2,7 @@
 # handlers file for splunkfwdr
 
 - name: restart splunk
-  service: name=splunk state=restarted
+  service:
+    name: splunk
+    state: restarted
 
